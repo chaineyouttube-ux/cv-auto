@@ -1,0 +1,1669 @@
+/* Styles de base */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* En-tête */
+header {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    color: white;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Cartes */
+.card {
+    border: none;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1rem 1.25rem;
+}
+
+/* Aperçu du CV - Modèle Sacha Dubois */
+#cv-preview {
+    background: white;
+    min-height: 800px;
+    border: 1px solid #eee;
+}
+
+.cv-container {
+    background: white;
+    padding: 0;
+}
+
+.cv-template {
+    width: 100%;
+    height: 100%;
+}
+
+.cv-wrapper {
+    display: flex;
+    min-height: 800px;
+}
+
+/* Colonne de gauche (gris clair) */
+.cv-left-column {
+    width: 35%;
+    background-color: #e9ecef;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.cv-photo {
+    width: 100%;
+    padding: 20px;
+    background-color: #e9ecef;
+}
+
+.cv-photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0;
+}
+
+.cv-section-left {
+    padding: 20px;
+    border-top: 1px solid #dee2e6;
+}
+
+.cv-section-title-left {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cv-contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #2c3e50;
+    font-size: 14px;
+}
+
+.contact-item i {
+    width: 20px;
+    color: #495057;
+}
+
+.cv-languages {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.language-item-left {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.language-name-left {
+    font-size: 14px;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.language-bar-container {
+    width: 100%;
+    height: 8px;
+    background-color: #dee2e6;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.language-bar {
+    height: 100%;
+    background-color: #1e3a5f;
+    transition: width 0.3s ease;
+}
+
+.cv-skills-list,
+.cv-interests-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cv-skills-list li,
+.cv-interests-list li {
+    font-size: 14px;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    padding-left: 0;
+}
+
+.cv-skills-list li:before,
+.cv-interests-list li:before {
+    content: "•";
+    color: #1e3a5f;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-right: 0;
+}
+
+/* Colonne de droite (blanc) */
+.cv-right-column {
+    width: 65%;
+    background-color: #ffffff;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.cv-header-right {
+    background-color: #1e3a5f;
+    color: white;
+    padding: 30px 40px;
+    margin-bottom: 0;
+}
+
+.cv-name {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+    color: white;
+}
+
+.cv-title {
+    font-size: 18px;
+    font-weight: normal;
+    margin: 0;
+    color: white;
+}
+
+.cv-section-right {
+    padding: 30px 40px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.cv-section-title-right {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cv-education {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.education-item-right {
+    margin-bottom: 15px;
+}
+
+.education-degree {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 5px 0;
+}
+
+.education-institution {
+    font-size: 14px;
+    color: #495057;
+    margin: 0 0 3px 0;
+}
+
+.education-year {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.cv-experience {
+    position: relative;
+    padding-left: 20px;
+}
+
+.experience-item-right {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.experience-timeline {
+    position: relative;
+    display: flex;
+    gap: 20px;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -25px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    background-color: #1e3a5f;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px #1e3a5f;
+}
+
+.timeline-content {
+    flex: 1;
+}
+
+.experience-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 5px 0;
+}
+
+.experience-company {
+    font-size: 15px;
+    color: #495057;
+    margin: 0 0 3px 0;
+    font-weight: 500;
+}
+
+.experience-period {
+    font-size: 14px;
+    color: #6c757d;
+    margin: 0 0 10px 0;
+}
+
+.experience-description {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+}
+
+.experience-description li {
+    font-size: 14px;
+    color: #495057;
+    margin-bottom: 5px;
+    padding-left: 15px;
+    position: relative;
+}
+
+.experience-description li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #1e3a5f;
+    font-weight: bold;
+}
+
+.cv-empty {
+    padding: 50px;
+    text-align: center;
+}
+
+/* Boutons */
+.btn {
+    border-radius: 0.375rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s;
+}
+
+/* Formulaire */
+.form-control, .form-select {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid #ced4da;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* ============================================
+   RESPONSIVE - MISE EN PAGE GÉNÉRALE
+   ============================================ */
+
+@media (max-width: 992px) {
+    .container-fluid {
+        padding: 0 15px;
+    }
+    
+    .card {
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Formulaire et aperçu en colonne sur tablette */
+    .row.g-4 > .col-lg-5,
+    .row.g-4 > .col-lg-7 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    /* En-tête */
+    header {
+        padding: 1.5rem 0;
+    }
+    
+    header h1 {
+        font-size: 1.75rem !important;
+    }
+    
+    header p {
+        font-size: 0.9rem !important;
+    }
+    
+    /* Header Bootstrap classes */
+    .bg-gradient-to-r {
+        padding: 1.5rem 1rem !important;
+    }
+    
+    .text-4xl {
+        font-size: 1.75rem !important;
+    }
+    
+    .text-lg {
+        font-size: 0.9rem !important;
+    }
+    
+    /* Cartes */
+    .card-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .card-header h2 {
+        font-size: 1rem;
+    }
+    
+    /* Formulaire */
+    .form-control,
+    .form-select {
+        font-size: 16px; /* Évite le zoom sur iOS */
+    }
+    
+    /* Boutons */
+    .btn-group {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn-group .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Aperçu CV */
+    #cv-preview {
+        min-height: auto;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    /* Container d'aperçu */
+    #preview-container {
+        max-height: none !important;
+        overflow: visible !important;
+    }
+    
+    /* Ajustements pour les petits écrans */
+    .mb-4 {
+        margin-bottom: 1rem !important;
+    }
+    
+    .p-3 {
+        padding: 0.75rem !important;
+    }
+    
+    /* Boutons d'action du formulaire */
+    .d-flex.flex-wrap.gap-2 {
+        flex-direction: column;
+    }
+    
+    .d-flex.flex-wrap.gap-2 .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .d-flex.flex-wrap.gap-2 .ms-auto {
+        margin-left: 0 !important;
+    }
+}
+
+/* ============================================
+   RESPONSIVE - MODÈLE CLAIR (Sacha Dubois)
+   ============================================ */
+
+@media (max-width: 768px) {
+    .cv-wrapper {
+        flex-direction: column;
+        min-height: auto;
+    }
+    
+    .cv-left-column {
+        width: 100%;
+        order: 2;
+    }
+    
+    .cv-right-column {
+        width: 100%;
+        order: 1;
+    }
+    
+    .cv-header-right {
+        padding: 20px;
+    }
+    
+    .cv-name {
+        font-size: 24px;
+    }
+    
+    .cv-title {
+        font-size: 16px;
+    }
+    
+    .cv-section-right {
+        padding: 20px;
+    }
+    
+    .cv-section-title-right {
+        font-size: 18px;
+    }
+    
+    .cv-photo {
+        padding: 15px;
+    }
+    
+    .cv-section-left {
+        padding: 15px;
+    }
+    
+    .experience-timeline {
+        padding-left: 0;
+    }
+    
+    .timeline-dot {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .cv-header-right {
+        padding: 15px;
+    }
+    
+    .cv-name {
+        font-size: 20px;
+    }
+    
+    .cv-section-right {
+        padding: 15px;
+    }
+    
+    .cv-section-left {
+        padding: 12px;
+    }
+    
+    .cv-section-title-left,
+    .cv-section-title-right {
+        font-size: 14px;
+    }
+}
+
+/* Animation de chargement */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.spinner-border {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    vertical-align: text-bottom;
+    border: 0.25em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+}
+
+/* ============================================
+   MODÈLE DARK MODE (Noa Andrieux)
+   ============================================ */
+
+.cv-template-dark {
+    background: #1a1a1a;
+}
+
+.cv-wrapper-dark {
+    display: flex;
+    min-height: 800px;
+}
+
+/* Colonne de gauche (gradient violet-gris foncé) */
+.cv-left-column-dark {
+    width: 35%;
+    background: linear-gradient(180deg, #3d3d4a 0%, #2a2a35 100%);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.cv-photo-dark {
+    width: 100%;
+    padding: 30px;
+    background: transparent;
+}
+
+.cv-photo-dark img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0;
+    filter: grayscale(100%) brightness(0.8);
+}
+
+.cv-section-left-dark {
+    padding: 25px 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cv-section-title-dark {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cv-contact-info-dark {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-item-dark {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.contact-item-dark i {
+    width: 18px;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.cv-skills-list-dark,
+.cv-qualities-list-dark {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cv-skills-list-dark li,
+.cv-qualities-list-dark li {
+    font-size: 13px;
+    color: #ffffff;
+    margin-bottom: 8px;
+    padding-left: 15px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.cv-skills-list-dark li:before,
+.cv-qualities-list-dark li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+/* Colonne de droite (gris très foncé) */
+.cv-right-column-dark {
+    width: 65%;
+    background-color: #1a1a1a;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.cv-header-dark {
+    padding: 40px 50px;
+    background: transparent;
+}
+
+.cv-name-dark {
+    font-size: 36px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: #ffffff;
+    letter-spacing: 2px;
+}
+
+.cv-title-dark {
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0;
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
+.cv-summary-dark {
+    padding: 0 50px 30px 50px;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.cv-summary-dark p {
+    margin: 0;
+    color: #e0e0e0;
+}
+
+.cv-divider {
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin: 25px 0;
+}
+
+.cv-section-right-dark {
+    padding: 30px 50px;
+}
+
+.cv-section-title-dark-right {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cv-experience-dark {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.experience-item-dark {
+    margin-bottom: 20px;
+}
+
+.experience-header-dark {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.experience-period-dark {
+    font-size: 13px;
+    color: #b0b0b0;
+    white-space: nowrap;
+    text-align: right;
+    min-width: 120px;
+}
+
+.experience-title-dark {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 5px 0;
+}
+
+.experience-company-dark {
+    font-size: 14px;
+    color: #d0d0d0;
+    margin: 0;
+}
+
+.experience-description-dark {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0 0 0;
+}
+
+.experience-description-dark li {
+    font-size: 13px;
+    color: #e0e0e0;
+    margin-bottom: 6px;
+    padding-left: 15px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.experience-description-dark li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.cv-education-dark {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.education-item-dark {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.education-year-dark {
+    font-size: 13px;
+    color: #b0b0b0;
+    white-space: nowrap;
+    min-width: 100px;
+}
+
+.education-degree-dark {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 5px 0;
+}
+
+.education-institution-dark {
+    font-size: 13px;
+    color: #d0d0d0;
+    margin: 0 0 3px 0;
+}
+
+.education-phone-dark {
+    font-size: 12px;
+    color: #b0b0b0;
+    margin: 0;
+}
+
+.cv-interests-icons-dark {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.interest-icon-dark {
+    font-size: 20px;
+    color: #ffffff;
+    opacity: 0.8;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.interest-icon-dark:hover {
+    opacity: 1;
+}
+
+/* ============================================
+   MODÈLE BLEU (Kian Graham)
+   ============================================ */
+
+.cv-template-blue {
+    background: white;
+}
+
+.cv-wrapper-blue {
+    display: flex;
+    min-height: 800px;
+}
+
+/* Colonne de gauche (bleu) */
+.cv-left-column-blue {
+    width: 35%;
+    background-color: #2c5aa0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.cv-photo-blue {
+    width: 100%;
+    padding: 40px 30px 20px 30px;
+    text-align: center;
+}
+
+.cv-photo-blue img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    display: block;
+    margin: 0 auto;
+}
+
+.cv-name-title-blue {
+    padding: 0 30px 30px 30px;
+    text-align: center;
+}
+
+.cv-name-blue {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: #ffffff;
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+.cv-title-blue {
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
+.cv-contact-blue {
+    padding: 0 30px 30px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-item-blue {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.contact-item-blue i {
+    width: 20px;
+    color: #ffffff;
+    font-size: 16px;
+    text-align: center;
+}
+
+.cv-skills-blue {
+    padding: 0 30px 30px 30px;
+}
+
+.cv-section-title-blue {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cv-skills-list-blue {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cv-skills-list-blue li {
+    font-size: 13px;
+    color: #ffffff;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.cv-skills-list-blue li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+/* Colonne de droite (blanc) */
+.cv-right-column-blue {
+    width: 65%;
+    background-color: #ffffff;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.cv-section-right-blue {
+    padding: 40px 50px;
+}
+
+.cv-section-title-right-blue {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c5aa0;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #2c5aa0;
+    padding-bottom: 8px;
+}
+
+.cv-experience-blue {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.experience-item-blue {
+    margin-bottom: 25px;
+}
+
+.experience-header-blue {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.experience-icon {
+    font-size: 20px;
+    color: #2c5aa0;
+    margin-top: 3px;
+    min-width: 25px;
+}
+
+.experience-content-blue {
+    flex: 1;
+}
+
+.experience-title-blue {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0 0 5px 0;
+}
+
+.experience-company-blue {
+    font-size: 15px;
+    color: #495057;
+    margin: 0 0 3px 0;
+    font-weight: 500;
+}
+
+.experience-period-blue {
+    font-size: 13px;
+    color: #6c757d;
+    margin: 0 0 10px 0;
+}
+
+.experience-description-blue {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0 25px;
+}
+
+.experience-description-blue li {
+    font-size: 14px;
+    color: #495057;
+    margin-bottom: 6px;
+    padding-left: 15px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.experience-description-blue li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #2c5aa0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.cv-education-blue {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.education-item-blue {
+    margin-bottom: 20px;
+}
+
+.education-header-blue {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.education-icon {
+    font-size: 20px;
+    color: #2c5aa0;
+    margin-top: 3px;
+    min-width: 25px;
+}
+
+.education-content-blue {
+    flex: 1;
+}
+
+.education-degree-blue {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0 0 5px 0;
+}
+
+.education-institution-blue {
+    font-size: 14px;
+    color: #495057;
+    margin: 0 0 3px 0;
+}
+
+.education-year-blue {
+    font-size: 13px;
+    color: #6c757d;
+    margin: 0 0 10px 0;
+}
+
+.education-achievements-blue {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0 25px;
+}
+
+.education-achievements-blue li {
+    font-size: 14px;
+    color: #495057;
+    margin-bottom: 6px;
+    padding-left: 15px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.education-achievements-blue li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #2c5aa0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.cv-certifications-blue {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.certification-item-blue {
+    margin-bottom: 20px;
+}
+
+.certification-header-blue {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.certification-icon {
+    font-size: 20px;
+    color: #2c5aa0;
+    margin-top: 3px;
+    min-width: 25px;
+}
+
+.certification-content-blue {
+    flex: 1;
+}
+
+.certification-name-blue {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0 0 5px 0;
+}
+
+.certification-institution-blue {
+    font-size: 14px;
+    color: #495057;
+    margin: 0 0 3px 0;
+}
+
+.certification-year-blue {
+    font-size: 13px;
+    color: #6c757d;
+    margin: 0;
+}
+
+/* ============================================
+   MODÈLE ROSE (Donna Stroupe)
+   ============================================ */
+
+.cv-template-rose {
+    background: white;
+    border: 2px solid #4a4a4a;
+}
+
+.cv-wrapper-rose {
+    display: flex;
+    min-height: 800px;
+}
+
+/* Colonne de gauche (rose/mauve) */
+.cv-left-column-rose {
+    width: 40%;
+    background-color: #d4a5a5;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 2px solid #4a4a4a;
+}
+
+.cv-photo-rose {
+    width: 100%;
+    padding: 40px 30px 30px 30px;
+    text-align: center;
+}
+
+.cv-photo-rose img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(74, 74, 74, 0.2);
+    display: block;
+    margin: 0 auto;
+}
+
+.cv-section-left-rose {
+    padding: 25px 30px;
+}
+
+.cv-section-title-rose {
+    font-size: 14px;
+    font-weight: 700;
+    color: #4a4a4a;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cv-profile-text-rose {
+    font-size: 13px;
+    color: #6a6a6a;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.cv-contact-rose {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contact-item-rose {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #6a6a6a;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.contact-item-rose i {
+    width: 18px;
+    color: #4a4a4a;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Colonne de droite (gris clair) */
+.cv-right-column-rose {
+    width: 60%;
+    background-color: #f5f5f5;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.cv-header-rose {
+    padding: 40px 40px 30px 40px;
+}
+
+.cv-name-rose {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: #4a4a4a;
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+.cv-title-rose {
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0;
+    color: #4a4a4a;
+}
+
+.cv-section-right-rose {
+    padding: 25px 40px;
+}
+
+.cv-section-title-right-rose {
+    font-size: 14px;
+    font-weight: 700;
+    color: #4a4a4a;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-arrow {
+    font-size: 12px;
+    color: #4a4a4a;
+}
+
+.cv-education-rose {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.education-item-rose {
+    margin-bottom: 12px;
+}
+
+.education-institution-rose {
+    font-size: 15px;
+    font-weight: 600;
+    color: #4a4a4a;
+    margin: 0 0 5px 0;
+}
+
+.education-degree-rose {
+    font-size: 13px;
+    color: #6a6a6a;
+    margin: 0 0 3px 0;
+}
+
+.education-year-rose {
+    font-size: 13px;
+    color: #6a6a6a;
+    margin: 0;
+}
+
+.cv-languages-rose {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.language-item-rose {
+    font-size: 13px;
+    color: #6a6a6a;
+    line-height: 1.6;
+}
+
+.cv-computer-skills-rose {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.computer-skill-item-rose {
+    font-size: 13px;
+    color: #6a6a6a;
+    line-height: 1.6;
+}
+
+.cv-volunteer-rose {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.volunteer-item-rose {
+    margin-bottom: 12px;
+}
+
+.volunteer-organization-rose {
+    font-size: 15px;
+    font-weight: 600;
+    color: #4a4a4a;
+    margin: 0 0 5px 0;
+}
+
+.volunteer-description-rose {
+    font-size: 13px;
+    color: #6a6a6a;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ============================================
+   RESPONSIVE - MODÈLE DARK (Noa Andrieux)
+   ============================================ */
+
+@media (max-width: 768px) {
+    .cv-wrapper-dark {
+        flex-direction: column;
+        min-height: auto;
+    }
+    
+    .cv-left-column-dark {
+        width: 100%;
+        order: 2;
+    }
+    
+    .cv-right-column-dark {
+        width: 100%;
+        order: 1;
+    }
+    
+    .cv-header-dark {
+        padding: 25px 20px;
+    }
+    
+    .cv-name-dark {
+        font-size: 28px;
+    }
+    
+    .cv-title-dark {
+        font-size: 14px;
+    }
+    
+    .cv-section-right-dark {
+        padding: 20px;
+    }
+    
+    .cv-section-title-dark-right {
+        font-size: 14px;
+    }
+    
+    .cv-photo-dark {
+        padding: 20px;
+    }
+    
+    .cv-section-left-dark {
+        padding: 20px;
+    }
+    
+    .cv-summary-dark {
+        padding: 0 20px 20px 20px;
+    }
+    
+    .experience-header-dark {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .experience-period-dark {
+        text-align: left;
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .cv-header-dark {
+        padding: 20px 15px;
+    }
+    
+    .cv-name-dark {
+        font-size: 24px;
+    }
+    
+    .cv-section-right-dark {
+        padding: 15px;
+    }
+    
+    .cv-section-left-dark {
+        padding: 15px;
+    }
+    
+    .cv-summary-dark {
+        padding: 0 15px 15px 15px;
+        font-size: 13px;
+    }
+}
+
+/* ============================================
+   RESPONSIVE - MODÈLE BLEU (Kian Graham)
+   ============================================ */
+
+@media (max-width: 768px) {
+    .cv-wrapper-blue {
+        flex-direction: column;
+        min-height: auto;
+    }
+    
+    .cv-left-column-blue {
+        width: 100%;
+        order: 2;
+    }
+    
+    .cv-right-column-blue {
+        width: 100%;
+        order: 1;
+    }
+    
+    .cv-header-blue {
+        padding: 30px 25px;
+    }
+    
+    .cv-name-blue {
+        font-size: 24px;
+    }
+    
+    .cv-title-blue {
+        font-size: 12px;
+    }
+    
+    .cv-section-right-blue {
+        padding: 25px;
+    }
+    
+    .cv-section-title-right-blue {
+        font-size: 16px;
+    }
+    
+    .cv-photo-blue {
+        padding: 30px 20px;
+    }
+    
+    .cv-photo-blue img {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .cv-contact-blue {
+        padding: 0 25px 25px 25px;
+    }
+    
+    .cv-skills-blue {
+        padding: 0 25px 25px 25px;
+    }
+    
+    .experience-header-blue {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .education-item-blue {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .education-year-blue {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .cv-header-blue {
+        padding: 25px 20px;
+    }
+    
+    .cv-name-blue {
+        font-size: 20px;
+    }
+    
+    .cv-section-right-blue {
+        padding: 20px;
+    }
+    
+    .cv-photo-blue {
+        padding: 25px 15px;
+    }
+    
+    .cv-photo-blue img {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .cv-contact-blue,
+    .cv-skills-blue {
+        padding: 0 20px 20px 20px;
+    }
+}
+
+/* ============================================
+   RESPONSIVE - MODÈLE ROSE (Donna Stroupe)
+   ============================================ */
+
+@media (max-width: 768px) {
+    .cv-wrapper-rose {
+        flex-direction: column;
+        min-height: auto;
+    }
+    
+    .cv-left-column-rose {
+        width: 100%;
+        order: 2;
+        border-right: none;
+        border-top: 2px solid #4a4a4a;
+    }
+    
+    .cv-right-column-rose {
+        width: 100%;
+        order: 1;
+    }
+    
+    .cv-header-rose {
+        padding: 30px 25px;
+    }
+    
+    .cv-name-rose {
+        font-size: 26px;
+    }
+    
+    .cv-title-rose {
+        font-size: 14px;
+    }
+    
+    .cv-section-right-rose {
+        padding: 20px 25px;
+    }
+    
+    .cv-section-title-right-rose {
+        font-size: 12px;
+    }
+    
+    .cv-photo-rose {
+        padding: 30px 20px;
+    }
+    
+    .cv-photo-rose img {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .cv-section-left-rose {
+        padding: 20px 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cv-header-rose {
+        padding: 25px 20px;
+    }
+    
+    .cv-name-rose {
+        font-size: 22px;
+    }
+    
+    .cv-section-right-rose {
+        padding: 15px 20px;
+    }
+    
+    .cv-section-left-rose {
+        padding: 15px 20px;
+    }
+    
+    .cv-photo-rose {
+        padding: 25px 15px;
+    }
+    
+    .cv-photo-rose img {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .cv-section-title-right-rose {
+        font-size: 11px;
+    }
+    
+    .section-arrow {
+        font-size: 10px;
+    }
+}
+
+/* Styles pour l'impression */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #cv-preview, #cv-preview * {
+        visibility: visible;
+    }
+    #cv-preview {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+    }
+    .no-print {
+        display: none !important;
+    }
+    .cv-wrapper,
+    .cv-wrapper-dark,
+    .cv-wrapper-blue,
+    .cv-wrapper-rose {
+        page-break-inside: avoid;
+    }
+}

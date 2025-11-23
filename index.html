@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Générateur de CV Professionnel</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Styles globaux */
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #2c3e50;
+            --background-color: #ffffff;
+            --text-color: #2d3748;
+            --accent-color: #e9ecef;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+        
+        /* En-tête */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Cartes */
+        .card {
+            border: none;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .card-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1rem 1.25rem;
+            background-color: var(--background-color);
+        }
+        
+        /* Aperçu du CV */
+        #cv-preview {
+            background: var(--background-color);
+            min-height: 800px;
+            border: 1px solid #eee;
+            color: var(--text-color);
+        }
+        
+        .cv-preview-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container-fluid py-4" id="app">
+        <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-6 mb-6 rounded-lg shadow-md">
+            <h1 class="text-4xl font-bold mb-2">Générateur de CV</h1>
+            <p class="text-lg opacity-90">Créez facilement votre CV professionnel</p>
+        </header>
+
+        <div class="row g-4">
+            <!-- Formulaire -->
+            <div class="col-lg-5">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-white border-0">
+                        <h2 class="h5 mb-0 fw-bold"><i class="fas fa-user-edit me-2"></i>Informations personnelles</h2>
+                    </div>
+                    <div class="card-body">
+                        <div v-if="!loading">
+                            <!-- Sélection du modèle -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Modèle de CV</label>
+                                <select v-model="selectedTemplate" class="form-select" @change="saveCV(false)">
+                                    <option value="light">Modèle Clair (Sacha Dubois)</option>
+                                    <option value="dark">Modèle Sombre (Noa Andrieux)</option>
+                                    <option value="blue">Modèle Bleu (Kian Graham)</option>
+                                    <option value="rose">Modèle Rose (Donna Stroupe)</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Formulaire principal -->
+                            <form @submit.prevent="() => saveCV(true)" class="needs-validation" novalidate>
+                                <!-- Section Informations de base -->
+                                <div class="mb-4 p-3 bg-light rounded">
+                                    <h5 class="mb-3 fw-bold"><i class="fas fa-id-card me-2"></i>Informations de base</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Nom complet <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" v-model="cvData.fullName" required>
+                                        <div class="invalid-feedback">Veuillez saisir votre nom complet.</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Poste recherché <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" v-model="cvData.jobTitle" required>
+                                        <div class="invalid-feedback">Veuillez indiquer le poste recherché.</div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                                            <input type="email" class="form-control" v-model="cvData.email" required>
+                                            <div class="invalid-feedback">Veuillez saisir une adresse email valide.</div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Téléphone</label>
+                                            <input type="tel" class="form-control" v-model="cvData.phone">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Adresse</label>
+                                        <textarea class="form-control" v-model="cvData.address" rows="2"></textarea>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Site web</label>
+                                        <input type="url" class="form-control" v-model="cvData.website" placeholder="www.example.com">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">LinkedIn</label>
+                                        <input type="text" class="form-control" v-model="cvData.linkedin" placeholder="linkedin.com/in/votre-profil">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Portfolio</label>
+                                        <input type="url" class="form-control" v-model="cvData.portfolio" placeholder="Lien vers votre portfolio">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Photo de profil</label>
+                                        <input type="file" class="form-control" @change="handlePhotoUpload" accept="image/*">
+                                        <small class="text-muted">Format recommandé : carré, 200x200px</small>
+                                    </div>
+                                </div>
+
+                                <!-- Section À propos -->
+                                <div class="mb-4 p-3 bg-light rounded">
+                                    <h5 class="mb-3 fw-bold"><i class="fas fa-user-tie me-2"></i>À propos</h5>
+                                    <div class="mb-3">
+                                        <label class="form-label">Résumé professionnel</label>
+                                        <textarea class="form-control" v-model="cvData.summary" rows="4" placeholder="Décrivez-vous en quelques lignes..."></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Section Expérience -->
+                                <div class="mb-4 p-3 bg-light rounded">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="mb-0 fw-bold"><i class="fas fa-briefcase me-2"></i>Expérience professionnelle</h5>
+                                        <button type="button" class="btn btn-sm btn-outline-primary" @click="addExperience">
+                                            <i class="fas fa-plus me-1"></i> Ajouter
+                                        </button>
+                                    </div>
+                                    
+                                    <div v-for="(exp, index) in cvData.experience" :key="'exp-'+index" class="mb-3 p-3 bg-white rounded border">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="fw-bold">{{ exp.title || 'Nouvelle expérience' }}</h6>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" @click="removeItem('experience', index)">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control form-control-sm mb-2" v-model="exp.company" placeholder="Entreprise">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control form-control-sm mb-2" v-model="exp.period" placeholder="Période (ex: 2020 - Présent)">
+                                            </div>
+                                        </div>
+                                        <textarea class="form-control form-control-sm" v-model="exp.description" rows="4" placeholder="Description (une ligne par point)"></textarea>
+                                        <small class="text-muted">Séparez chaque point par un retour à la ligne</small>
+                                    </div>
+                                </div>
+
+                                <!-- Section Formation -->
+                                <div class="mb-4 p-3 bg-light rounded">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="mb-0 fw-bold"><i class="fas fa-graduation-cap me-2"></i>Formation</h5>
+                                        <button type="button" class="btn btn-sm btn-outline-primary" @click="addEducation">
+                                            <i class="fas fa-plus me-1"></i> Ajouter
+                                        </button>
+                                    </div>
+                                    
+                                    <div v-for="(edu, index) in cvData.education" :key="'edu-'+index" class="mb-3 p-3 bg-white rounded border">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="fw-bold">{{ edu.degree || 'Nouvelle formation' }}</h6>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" @click="removeItem('education', index)">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control form-control-sm mb-2" v-model="edu.institution" placeholder="Établissement">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control form-control-sm mb-2" v-model="edu.year" placeholder="Année">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control form-control-sm mb-2" v-model="edu.phone" placeholder="Téléphone (optionnel)">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section Compétences -->
+                                <div class="mb-4 p-3 bg-light rounded">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="mb-0 fw-bold"><i class="fas fa-tools me-2"></i>Compétences</h5>
+                                    </div>
+                                    <div>
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" v-model="newSkill" placeholder="Ajouter une compétence" @keyup.enter="addSkill">
+                                            <button class="btn btn-outline-secondary" type="button" @click="addSkill">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="d-flex flex-wrap">
+                                            <div v-for="(skill, index) in cvData.skills" :key="'skill-'+index" class="position-relative me-2 mb-2">
+                                                <span class="badge bg-primary p-2">
+                                                    {{ skill }}
+                                                    <button type="button" class="btn-close btn-close-white btn-sm ms-1" style="font-size: 0.5rem;" @click="removeItem('skills', index)"></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section Langues -->
+                                <div class="mb-4 p-3 bg-light rounded">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="mb-0 fw-bold"><i class="fas fa-language me-2"></i>Langues</h5>
+                                        <button type="button" class="btn btn-sm btn-outline-primary" @click="addLanguage">
+                                            <i class="fas fa-plus me-1"></i> Ajouter
+                                        </button>
+                                    </div>
+                                    
+                                    <div v-for="(lang, index) in cvData.languages" :key="'lang-'+index" class="mb-2 p-2 bg-white rounded border">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="row g-2 w-100">
+                                                <div class="col-md-6">
+                                                    <input type="text" class="form-control form-control-sm" v-model="lang.name" placeholder="Langue">
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <select class="form-select form-select-sm" v-model="lang.level">
+                                                        <option value="">Niveau</option>
+                                                        <option value="Débutant">Débutant</option>
+                                                        <option value="Intermédiaire">Intermédiaire</option>
+                                                        <option value="Avancé">Avancé</option>
+                                                        <option value="Courant">Courant</option>
+                                                        <option value="Bilingue">Bilingue</option>
+                                                        <option value="Natif">Natif</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" @click="removeItem('languages', index)">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section Qualités -->
+                                <div class="mb-4 p-3 bg-light rounded">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="mb-0 fw-bold"><i class="fas fa-star me-2"></i>Qualités</h5>
+                                    </div>
+                                    <div>
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" v-model="newQuality" placeholder="Ajouter une qualité" @keyup.enter="addQuality">
+                                            <button class="btn btn-outline-secondary" type="button" @click="addQuality">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="d-flex flex-wrap">
+                                            <div v-for="(quality, index) in cvData.qualities" :key="'quality-'+index" class="position-relative me-2 mb-2">
+                                                <span class="badge bg-primary p-2">
+                                                    {{ quality }}
+                                                    <button type="button" class="btn-close btn-close-white btn-sm ms-1" style="font-size: 0.5rem;" @click="removeItem('qualities', index)"></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section Certifications -->
+                                <div class="mb-4 p-3 bg-light rounded">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="mb-0 fw-bold"><i class="fas fa-certificate me-2"></i>Certifications</h5>
+                                        <button type="button" class="btn btn-sm btn-outline-primary" @click="addCertification">
+                                            <i class="fas fa-plus me-1"></i> Ajouter
+                                        </button>
+                                    </div>
+                                    
+                                    <div v-for="(cert, index) in cvData.certifications" :key="'cert-'+index" class="mb-3 p-3 bg-white rounded border">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="fw-bold">{{ cert.name || 'Nouvelle certification' }}</h6>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" @click="removeItem('certifications', index)">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control form-control-sm mb-2" v-model="cert.institution" placeholder="Institution">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control form-control-sm mb-2" v-model="cert.year" placeholder="Année">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section Compétences informatiques -->
+                                <div class="mb-4 p-3 bg-light rounded">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="mb-0 fw-bold"><i class="fas fa-laptop me-2"></i>Compétences informatiques</h5>
+                                    </div>
+                                    <div>
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" v-model="newComputerSkill" placeholder="Ajouter une compétence informatique" @keyup.enter="addComputerSkill">
+                                            <button class="btn btn-outline-secondary" type="button" @click="addComputerSkill">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="d-flex flex-wrap">
+                                            <div v-for="(skill, index) in cvData.computerSkills" :key="'comp-skill-'+index" class="position-relative me-2 mb-2">
+                                                <span class="badge bg-primary p-2">
+                                                    {{ skill }}
+                                                    <button type="button" class="btn-close btn-close-white btn-sm ms-1" style="font-size: 0.5rem;" @click="removeItem('computerSkills', index)"></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section Expérience bénévole -->
+                                <div class="mb-4 p-3 bg-light rounded">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="mb-0 fw-bold"><i class="fas fa-hands-helping me-2"></i>Expérience bénévole</h5>
+                                        <button type="button" class="btn btn-sm btn-outline-primary" @click="addVolunteer">
+                                            <i class="fas fa-plus me-1"></i> Ajouter
+                                        </button>
+                                    </div>
+                                    
+                                    <div v-for="(vol, index) in cvData.volunteer" :key="'vol-'+index" class="mb-3 p-3 bg-white rounded border">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="fw-bold">{{ vol.organization || 'Nouvelle expérience bénévole' }}</h6>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" @click="removeItem('volunteer', index)">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <div class="mb-2">
+                                            <input type="text" class="form-control form-control-sm mb-2" v-model="vol.description" placeholder="Description de l'expérience">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section Centres d'intérêt -->
+                                <div class="mb-4 p-3 bg-light rounded">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="mb-0 fw-bold"><i class="fas fa-heart me-2"></i>Centres d'intérêt</h5>
+                                    </div>
+                                    <div>
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" v-model="newInterest" placeholder="Ajouter un centre d'intérêt" @keyup.enter="addInterest">
+                                            <button class="btn btn-outline-secondary" type="button" @click="addInterest">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="d-flex flex-wrap">
+                                            <div v-for="(interest, index) in cvData.interests" :key="'interest-'+index" class="position-relative me-2 mb-2">
+                                                <span class="badge bg-primary p-2">
+                                                    {{ interest }}
+                                                    <button type="button" class="btn-close btn-close-white btn-sm ms-1" style="font-size: 0.5rem;" @click="removeItem('interests', index)"></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-wrap gap-2 mt-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-1"></i> Enregistrer
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary" @click="loadExample">
+                                        <i class="fas fa-magic me-1"></i> Remplir avec un exemple
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger ms-auto" @click="resetForm">
+                                        <i class="fas fa-trash-alt me-1"></i> Réinitialiser
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div v-else class="text-center p-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Chargement...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aperçu du CV -->
+            <div class="col-lg-7">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                        <h2 class="h5 mb-0 fw-bold"><i class="fas fa-eye me-2"></i>Aperçu</h2>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-primary" @click="downloadPDF">
+                                <i class="fas fa-download me-1"></i> Télécharger PDF
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" @click="printCV">
+                                <i class="fas fa-print me-1"></i> Imprimer
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0 overflow-auto" style="max-height: calc(100vh - 200px);" id="preview-container">
+                        <div id="cv-preview" class="cv-container">
+                            <!-- Modèle Clair (Sacha Dubois) -->
+                            <div v-if="cvData.fullName && selectedTemplate === 'light'" class="cv-template cv-template-light">
+                                <div class="cv-wrapper">
+                                    <!-- Colonne de gauche (gris clair) -->
+                                    <div class="cv-left-column">
+                                        <!-- Photo -->
+                                        <div v-if="cvData.photo" class="cv-photo">
+                                            <img :src="cvData.photo" alt="Photo de profil">
+                                        </div>
+                                        
+                                        <!-- Coordonnées -->
+                                        <div class="cv-section-left">
+                                            <h3 class="cv-section-title-left">Coordonnées</h3>
+                                            <div class="cv-contact-info">
+                                                <div v-if="cvData.phone" class="contact-item">
+                                                    <i class="fas fa-phone"></i>
+                                                    <span>{{ cvData.phone }}</span>
+                                                </div>
+                                                <div v-if="cvData.email" class="contact-item">
+                                                    <i class="fas fa-envelope"></i>
+                                                    <span>{{ cvData.email }}</span>
+                                                </div>
+                                                <div v-if="cvData.address" class="contact-item">
+                                                    <i class="fas fa-home"></i>
+                                                    <span>{{ cvData.address }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Langues -->
+                                        <div v-if="cvData.languages && cvData.languages.length > 0" class="cv-section-left">
+                                            <h3 class="cv-section-title-left">Langues</h3>
+                                            <div class="cv-languages">
+                                                <template v-for="(lang, index) in cvData.languages" :key="'lang-'+index">
+                                                    <div v-if="lang.name" class="language-item-left">
+                                                        <span class="language-name-left">{{ lang.name || 'Langue' }}</span>
+                                                        <div class="language-bar-container">
+                                                            <div class="language-bar" :style="{ width: getLanguageLevelWidth(lang.level || '') }"></div>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Compétences -->
+                                        <div v-if="cvData.skills && cvData.skills.length > 0" class="cv-section-left">
+                                            <h3 class="cv-section-title-left">Compétences</h3>
+                                            <ul class="cv-skills-list">
+                                                <li v-for="(skill, index) in cvData.skills" :key="'skill-'+index">{{ skill }}</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- Centres d'intérêt -->
+                                        <div v-if="cvData.interests && cvData.interests.length > 0" class="cv-section-left">
+                                            <h3 class="cv-section-title-left">Centres d'intérêt</h3>
+                                            <ul class="cv-interests-list">
+                                                <li v-for="(interest, index) in cvData.interests" :key="'interest-'+index">{{ interest }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Colonne de droite (blanc) -->
+                                    <div class="cv-right-column">
+                                        <!-- En-tête avec nom et titre -->
+                                        <div class="cv-header-right">
+                                            <h1 class="cv-name">{{ cvData.fullName }}</h1>
+                                            <h2 class="cv-title">{{ cvData.jobTitle }}</h2>
+                                        </div>
+                                        
+                                        <!-- Formation -->
+                                        <div v-if="cvData.education && cvData.education.length > 0" class="cv-section-right">
+                                            <h3 class="cv-section-title-right">Formation</h3>
+                                            <div class="cv-education">
+                                                <div v-for="(edu, index) in cvData.education" :key="'edu-'+index" class="education-item-right">
+                                                    <h4 class="education-degree">{{ edu.degree }}</h4>
+                                                    <div class="education-institution">{{ edu.institution }}</div>
+                                                    <div class="education-year">{{ edu.year }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Expérience professionnelle -->
+                                        <div v-if="cvData.experience && cvData.experience.length > 0" class="cv-section-right">
+                                            <h3 class="cv-section-title-right">Expérience Professionnelle</h3>
+                                            <div class="cv-experience">
+                                                <div v-for="(exp, index) in cvData.experience" :key="'exp-'+index" class="experience-item-right">
+                                                    <div class="experience-timeline">
+                                                        <div class="timeline-dot"></div>
+                                                        <div class="timeline-content">
+                                                            <h4 class="experience-title">{{ exp.title }}</h4>
+                                                            <div class="experience-company">{{ exp.company }}</div>
+                                                            <div class="experience-period">{{ exp.period }}</div>
+                                                            <ul class="experience-description" v-if="exp.description && exp.description.trim()">
+                                                                <template v-for="(line, lineIndex) in (exp.description || '').split('\n')" :key="lineIndex">
+                                                                    <li v-if="line.trim()">{{ line.trim() }}</li>
+                                                                </template>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Modèle Dark Mode (Noa Andrieux) -->
+                            <div v-else-if="cvData.fullName && selectedTemplate === 'dark'" class="cv-template cv-template-dark">
+                                <div class="cv-wrapper-dark">
+                                    <!-- Colonne de gauche (gradient violet-gris foncé) -->
+                                    <div class="cv-left-column-dark">
+                                        <!-- Photo -->
+                                        <div v-if="cvData.photo" class="cv-photo-dark">
+                                            <img :src="cvData.photo" alt="Photo de profil">
+                                        </div>
+                                        
+                                        <!-- Contact -->
+                                        <div class="cv-section-left-dark">
+                                            <h3 class="cv-section-title-dark">CONTACT</h3>
+                                            <div class="cv-contact-info-dark">
+                                                <div v-if="cvData.phone" class="contact-item-dark">
+                                                    <i class="fas fa-phone"></i>
+                                                    <span>{{ cvData.phone }}</span>
+                                                </div>
+                                                <div v-if="cvData.email" class="contact-item-dark">
+                                                    <i class="fas fa-envelope"></i>
+                                                    <span>{{ cvData.email }}</span>
+                                                </div>
+                                                <div v-if="cvData.website" class="contact-item-dark">
+                                                    <i class="fas fa-globe"></i>
+                                                    <span>{{ cvData.website }}</span>
+                                                </div>
+                                                <div v-if="cvData.address" class="contact-item-dark">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                    <span>{{ cvData.address }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Compétences -->
+                                        <div v-if="cvData.skills && cvData.skills.length > 0" class="cv-section-left-dark">
+                                            <h3 class="cv-section-title-dark">COMPÉTENCES</h3>
+                                            <ul class="cv-skills-list-dark">
+                                                <li v-for="(skill, index) in cvData.skills" :key="'skill-dark-'+index">{{ skill }}</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- Qualités -->
+                                        <div v-if="cvData.qualities && cvData.qualities.length > 0" class="cv-section-left-dark">
+                                            <h3 class="cv-section-title-dark">QUALITÉS</h3>
+                                            <ul class="cv-qualities-list-dark">
+                                                <li v-for="(quality, index) in cvData.qualities" :key="'quality-'+index">{{ quality }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Colonne de droite (gris très foncé) -->
+                                    <div class="cv-right-column-dark">
+                                        <!-- En-tête avec nom et titre -->
+                                        <div class="cv-header-dark">
+                                            <h1 class="cv-name-dark">{{ cvData.fullName.toUpperCase() }}</h1>
+                                            <h2 class="cv-title-dark">{{ cvData.jobTitle.toUpperCase() }}</h2>
+                                        </div>
+                                        
+                                        <!-- Résumé -->
+                                        <div v-if="cvData.summary" class="cv-summary-dark">
+                                            <p>{{ cvData.summary }}</p>
+                                            <div class="cv-divider"></div>
+                                        </div>
+                                        
+                                        <!-- Expériences -->
+                                        <div v-if="cvData.experience && cvData.experience.length > 0" class="cv-section-right-dark">
+                                            <h3 class="cv-section-title-dark-right">EXPÉRIENCES</h3>
+                                            <div class="cv-experience-dark">
+                                                <div v-for="(exp, index) in cvData.experience" :key="'exp-dark-'+index" class="experience-item-dark">
+                                                    <div class="experience-header-dark">
+                                                        <div class="experience-period-dark">{{ exp.period }}</div>
+                                                        <div>
+                                                            <h4 class="experience-title-dark">{{ exp.title }}</h4>
+                                                            <div class="experience-company-dark">{{ exp.company }}</div>
+                                                        </div>
+                                                    </div>
+                                                    <ul class="experience-description-dark" v-if="exp.description && exp.description.trim()">
+                                                        <template v-for="(line, lineIndex) in (exp.description || '').split('\n')" :key="lineIndex">
+                                                            <li v-if="line.trim()">{{ line.trim() }}</li>
+                                                        </template>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="cv-divider"></div>
+                                        </div>
+                                        
+                                        <!-- Formations -->
+                                        <div v-if="cvData.education && cvData.education.length > 0" class="cv-section-right-dark">
+                                            <h3 class="cv-section-title-dark-right">FORMATIONS</h3>
+                                            <div class="cv-education-dark">
+                                                <div v-for="(edu, index) in cvData.education" :key="'edu-dark-'+index" class="education-item-dark">
+                                                    <div class="education-year-dark">{{ edu.year }}</div>
+                                                    <div>
+                                                        <h4 class="education-degree-dark">{{ edu.degree }}</h4>
+                                                        <div class="education-institution-dark">{{ edu.institution }}</div>
+                                                        <div v-if="edu.phone" class="education-phone-dark">Téléphone: {{ edu.phone }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cv-divider"></div>
+                                        </div>
+                                        
+                                        <!-- Centres d'intérêt -->
+                                        <div v-if="cvData.interests && cvData.interests.length > 0" class="cv-section-right-dark">
+                                            <h3 class="cv-section-title-dark-right">CENTRES D'INTÉRÊT</h3>
+                                            <div class="cv-interests-icons-dark">
+                                                <i v-for="(interest, index) in cvData.interests" :key="'interest-dark-'+index" class="fas fa-circle interest-icon-dark" :title="interest"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Modèle Bleu (Kian Graham) -->
+                            <div v-else-if="cvData.fullName && selectedTemplate === 'blue'" class="cv-template cv-template-blue">
+                                <div class="cv-wrapper-blue">
+                                    <!-- Colonne de gauche (bleu) -->
+                                    <div class="cv-left-column-blue">
+                                        <!-- Photo -->
+                                        <div v-if="cvData.photo" class="cv-photo-blue">
+                                            <img :src="cvData.photo" alt="Photo de profil">
+                                        </div>
+                                        
+                                        <!-- Nom et titre -->
+                                        <div class="cv-name-title-blue">
+                                            <h1 class="cv-name-blue">{{ cvData.fullName.toUpperCase() }}</h1>
+                                            <h2 class="cv-title-blue">{{ cvData.jobTitle.toUpperCase() }}</h2>
+                                        </div>
+                                        
+                                        <!-- Contact -->
+                                        <div class="cv-contact-blue">
+                                            <div v-if="cvData.linkedin" class="contact-item-blue">
+                                                <i class="fab fa-linkedin"></i>
+                                                <span>{{ cvData.linkedin }}</span>
+                                            </div>
+                                            <div v-if="cvData.email" class="contact-item-blue">
+                                                <i class="fas fa-envelope"></i>
+                                                <span>{{ cvData.email }}</span>
+                                            </div>
+                                            <div v-if="cvData.phone" class="contact-item-blue">
+                                                <i class="fas fa-phone"></i>
+                                                <span>{{ cvData.phone }}</span>
+                                            </div>
+                                            <div v-if="cvData.website" class="contact-item-blue">
+                                                <i class="fas fa-globe"></i>
+                                                <span>{{ cvData.website }}</span>
+                                            </div>
+                                            <div v-if="cvData.portfolio" class="contact-item-blue">
+                                                <i class="fas fa-briefcase"></i>
+                                                <span>Click here for my portfolio</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Compétences pertinentes -->
+                                        <div v-if="cvData.skills && cvData.skills.length > 0" class="cv-skills-blue">
+                                            <h3 class="cv-section-title-blue">RELEVANT SKILLS</h3>
+                                            <ul class="cv-skills-list-blue">
+                                                <li v-for="(skill, index) in cvData.skills" :key="'skill-blue-'+index">{{ skill }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Colonne de droite (blanc) -->
+                                    <div class="cv-right-column-blue">
+                                        <!-- Expérience professionnelle -->
+                                        <div v-if="cvData.experience && cvData.experience.length > 0" class="cv-section-right-blue">
+                                            <h3 class="cv-section-title-right-blue">WORK EXPERIENCE</h3>
+                                            <div class="cv-experience-blue">
+                                                <div v-for="(exp, index) in cvData.experience" :key="'exp-blue-'+index" class="experience-item-blue">
+                                                    <div class="experience-header-blue">
+                                                        <i class="fas fa-plane experience-icon"></i>
+                                                        <div class="experience-content-blue">
+                                                            <h4 class="experience-title-blue">{{ exp.title }}</h4>
+                                                            <div class="experience-company-blue">{{ exp.company }}</div>
+                                                            <div class="experience-period-blue">{{ exp.period }}</div>
+                                                        </div>
+                                                    </div>
+                                                    <ul class="experience-description-blue" v-if="exp.description && exp.description.trim()">
+                                                        <template v-for="(line, lineIndex) in (exp.description || '').split('\n')" :key="lineIndex">
+                                                            <li v-if="line.trim()">{{ line.trim() }}</li>
+                                                        </template>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Formation -->
+                                        <div v-if="cvData.education && cvData.education.length > 0" class="cv-section-right-blue">
+                                            <h3 class="cv-section-title-right-blue">EDUCATION HISTORY</h3>
+                                            <div class="cv-education-blue">
+                                                <div v-for="(edu, index) in cvData.education" :key="'edu-blue-'+index" class="education-item-blue">
+                                                    <div class="education-header-blue">
+                                                        <i class="fas fa-graduation-cap education-icon"></i>
+                                                        <div class="education-content-blue">
+                                                            <h4 class="education-degree-blue">{{ edu.degree }}</h4>
+                                                            <div class="education-institution-blue">Institution: {{ edu.institution }}</div>
+                                                            <div class="education-year-blue">Year of Graduation: {{ edu.year }}</div>
+                                                        </div>
+                                                    </div>
+                                                    <ul v-if="edu.achievements && edu.achievements.length > 0" class="education-achievements-blue">
+                                                        <li v-for="(achievement, achIndex) in edu.achievements" :key="achIndex">{{ achievement }}</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Certifications -->
+                                        <div v-if="cvData.certifications && cvData.certifications.length > 0" class="cv-section-right-blue">
+                                            <h3 class="cv-section-title-right-blue">CERTIFICATIONS</h3>
+                                            <div class="cv-certifications-blue">
+                                                <div v-for="(cert, index) in cvData.certifications" :key="'cert-blue-'+index" class="certification-item-blue">
+                                                    <div class="certification-header-blue">
+                                                        <i class="fas fa-award certification-icon"></i>
+                                                        <div class="certification-content-blue">
+                                                            <h4 class="certification-name-blue">{{ cert.name }}</h4>
+                                                            <div class="certification-institution-blue">Institution: {{ cert.institution }}</div>
+                                                            <div class="certification-year-blue">{{ cert.year }}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Modèle Rose (Donna Stroupe) -->
+                            <div v-else-if="cvData.fullName && selectedTemplate === 'rose'" class="cv-template cv-template-rose">
+                                <div class="cv-wrapper-rose">
+                                    <!-- Colonne de gauche (rose/mauve) -->
+                                    <div class="cv-left-column-rose">
+                                        <!-- Photo -->
+                                        <div v-if="cvData.photo" class="cv-photo-rose">
+                                            <img :src="cvData.photo" alt="Photo de profil">
+                                        </div>
+                                        
+                                        <!-- Profile -->
+                                        <div v-if="cvData.summary" class="cv-section-left-rose">
+                                            <h3 class="cv-section-title-rose">PROFILE</h3>
+                                            <p class="cv-profile-text-rose">{{ cvData.summary }}</p>
+                                        </div>
+                                        
+                                        <!-- Contact -->
+                                        <div class="cv-section-left-rose">
+                                            <h3 class="cv-section-title-rose">CONTACT ME</h3>
+                                            <div class="cv-contact-rose">
+                                                <div v-if="cvData.phone" class="contact-item-rose">
+                                                    <i class="fas fa-phone"></i>
+                                                    <span>{{ cvData.phone }}</span>
+                                                </div>
+                                                <div v-if="cvData.email" class="contact-item-rose">
+                                                    <i class="fas fa-envelope"></i>
+                                                    <span>{{ cvData.email }}</span>
+                                                </div>
+                                                <div v-if="cvData.address" class="contact-item-rose">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                    <span>{{ cvData.address }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Colonne de droite (gris clair) -->
+                                    <div class="cv-right-column-rose">
+                                        <!-- Nom et titre -->
+                                        <div class="cv-header-rose">
+                                            <h1 class="cv-name-rose">{{ cvData.fullName.toUpperCase() }}</h1>
+                                            <h2 class="cv-title-rose">{{ cvData.jobTitle }}</h2>
+                                        </div>
+                                        
+                                        <!-- Formation -->
+                                        <div v-if="cvData.education && cvData.education.length > 0" class="cv-section-right-rose">
+                                            <h3 class="cv-section-title-right-rose">
+                                                <i class="fas fa-arrow-right section-arrow"></i>EDUCATION
+                                            </h3>
+                                            <div class="cv-education-rose">
+                                                <div v-for="(edu, index) in cvData.education" :key="'edu-rose-'+index" class="education-item-rose">
+                                                    <div class="education-institution-rose">{{ edu.institution }}</div>
+                                                    <div class="education-degree-rose">{{ edu.degree }}</div>
+                                                    <div v-if="edu.year" class="education-year-rose">{{ edu.year }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Langues -->
+                                        <div v-if="cvData.languages && cvData.languages.length > 0" class="cv-section-right-rose">
+                                            <h3 class="cv-section-title-right-rose">
+                                                <i class="fas fa-arrow-right section-arrow"></i>LANGUAGE
+                                            </h3>
+                                            <div class="cv-languages-rose">
+                                                <div v-for="(lang, index) in cvData.languages" :key="'lang-rose-'+index" class="language-item-rose">
+                                                    <span v-if="lang.level === 'Natif' || lang.level === 'Natif'">Native {{ lang.name }}.</span>
+                                                    <span v-else-if="lang.level === 'Courant' || lang.level === 'Avancé'">Advanced {{ lang.name }}.</span>
+                                                    <span v-else>{{ lang.level }} {{ lang.name }}.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Compétences informatiques -->
+                                        <div v-if="cvData.computerSkills && cvData.computerSkills.length > 0" class="cv-section-right-rose">
+                                            <h3 class="cv-section-title-right-rose">
+                                                <i class="fas fa-arrow-right section-arrow"></i>COMPUTER SKILLS
+                                            </h3>
+                                            <div class="cv-computer-skills-rose">
+                                                <div v-for="(skill, index) in cvData.computerSkills" :key="'comp-skill-rose-'+index" class="computer-skill-item-rose">
+                                                    {{ skill }}.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Expérience bénévole -->
+                                        <div v-if="cvData.volunteer && cvData.volunteer.length > 0" class="cv-section-right-rose">
+                                            <h3 class="cv-section-title-right-rose">
+                                                <i class="fas fa-arrow-right section-arrow"></i>VOLUNTEER EXPERIENCE
+                                            </h3>
+                                            <div class="cv-volunteer-rose">
+                                                <div v-for="(vol, index) in cvData.volunteer" :key="'vol-rose-'+index" class="volunteer-item-rose">
+                                                    <div class="volunteer-organization-rose">{{ vol.organization }}</div>
+                                                    <div v-if="vol.description" class="volunteer-description-rose">{{ vol.description }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Message si aucun nom -->
+                            <div v-else class="cv-empty">
+                                <p class="text-muted text-center p-5">Veuillez remplir les informations pour voir l'aperçu du CV</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-5 py-3 text-center text-muted small border-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-md-start">
+                        Générateur de CV &copy; {{ new Date().getFullYear() }}
+                    </div>
+                    <div class="col-md-6 text-md-end mt-2 mt-md-0">
+                        <span class="me-3">Créé par Junior aka &amp; Kouadio Loïc Emmanuel</span>
+                        <a href="#" class="text-decoration-none me-3">Aide</a>
+                        <a href="#" class="text-decoration-none me-3">Confidentialité</a>
+                        <a href="#" class="text-decoration-none">Conditions</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Toast de notification -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto" id="toast-title">Notification</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toast-message">
+                Opération effectuée avec succès.
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.31/dist/vue.global.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
+    
+    <script>
+        // Initialisation des tooltips Bootstrap
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+</body>
+</html>
